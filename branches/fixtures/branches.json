@@ -1,0 +1,90 @@
+[
+  {
+    "model": "branches.branch",
+    "pk": 1,
+    "fields": {
+      "name": "root",
+      "up_path": "",
+      "parent": null,
+      "root": null,
+      "height": 0
+    }
+  },
+  {
+    "model": "branches.branch",
+    "pk": 2,
+    "fields": {
+      "name": "a",
+      "up_path": "/1",
+      "parent": 1,
+      "root": 1,
+      "height": 1
+    }
+  },
+  {
+    "model": "branches.branch",
+    "pk": 3,
+    "fields": {
+      "name": "b",
+      "up_path": "/1",
+      "parent": 1,
+      "root": 1,
+      "height": 1
+    }
+  },
+  {
+    "model": "branches.branch",
+    "pk": 4,
+    "fields": {
+      "name": "c",
+      "up_path": "/1",
+      "parent": 1,
+      "root": 1,
+      "height": 1
+    }
+  },
+  {
+    "model": "branches.branch",
+    "pk": 5,
+    "fields": {
+      "name": "aa",
+      "up_path": "/1/2",
+      "parent": 2,
+      "root": 1,
+      "height": 2
+    }
+  },
+  {
+    "model": "branches.branch",
+    "pk": 6,
+    "fields": {
+      "name": "ab",
+      "up_path": "/1/2",
+      "parent": 2,
+      "root": 1,
+      "height": 2
+    }
+  },
+  {
+    "model": "branches.branch",
+    "pk": 7,
+    "fields": {
+      "name": "aaa",
+      "up_path": "/1/2/5",
+      "parent": 5,
+      "root": 1,
+      "height": 3
+    }
+  },
+  {
+    "model": "branches.branch",
+    "pk": 8,
+    "fields": {
+      "name": "ba",
+      "up_path": "/1/3",
+      "parent": 3,
+      "root": 1,
+      "height": 2
+    }
+  }
+]
