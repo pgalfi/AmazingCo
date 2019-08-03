@@ -11,7 +11,7 @@ class Branch(models.Model):
 
     @property
     def full_path(self):
-        return self.up_path + self.name
+        return self.up_path + "/" + str(self.id)
 
     def __repr__(self):
         return self.name + "=" + self.up_path + " (" + str(self.height) + ")"

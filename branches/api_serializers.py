@@ -6,6 +6,6 @@ from branches.models import Branch
 class BranchSerializer(ModelSerializer):
     class Meta:
         model = Branch
-        fields = ["id", "name", "node_path", "full_path", "parent", "root", "height"]
+        fields = ["id", "name", "up_path", "full_path", "parent", "root", "height"]
 
 
