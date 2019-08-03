@@ -9,6 +9,10 @@ class Branch(models.Model):
     root = models.ForeignKey('Branch', default=None, null=True, on_delete=models.CASCADE, related_name="all_nodes")
     height = models.IntegerField(default=0)
 
+    @property
+    def full_path(self):
+        return self.node_path + self.name
+
     def __repr__(self):
         return self.name + "=" + self.node_path + " (" + str(self.height) + ")"
 
