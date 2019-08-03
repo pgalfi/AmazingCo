@@ -17,7 +17,7 @@ class BranchViewSet(ModelViewSet):
         branch = get_object_or_404(Branch, pk=pk)
         if "name" in request.data:
             child = branch.add_child(request.data["name"])
-            return Response(BranchSerializer(child).data)
+            return Response(BranchSerializer(child, context={"request": request}).data)
         else:
             return Response("", status=status.HTTP_400_BAD_REQUEST)
 
@@ -30,7 +30,7 @@ class BranchViewSet(ModelViewSet):
             branch.up_path = parent.up_path + "/" + str(parent.id)
             branch.height = parent.height + 1
             branch.save()
-            return Response(BranchSerializer(branch).data)
+            return Response(BranchSerializer(branch, context={"request": request}).data)
         else:
             return Response("", status=status.HTTP_400_BAD_REQUEST)
 
@@ -39,5 +39,5 @@ class BranchViewSet(ModelViewSet):
         branch = get_object_or_404(Branch, pk=pk)
         branch_path = branch.full_path
         nodes = Branch.objects.filter(up_path__startswith=branch_path)
-        return Response(BranchSerializer(nodes, many=True).data)
+        return Response(BranchSerializer(nodes, many=True, context={"request": request}).data)
 
