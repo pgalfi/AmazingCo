@@ -35,4 +35,4 @@ Each node should have the following info:
 height(a) == 1.
 
 If it is possible for you to make a simple UI for this challenge, that
-would be great. If you feel adventurous you can use our UI components (http://ui.tradeshift.com )
+would be great.

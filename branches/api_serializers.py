@@ -9,11 +9,11 @@ class OfficeSerializer(ModelSerializer):
 
     instance = HyperlinkedIdentityField(view_name="office-detail")
     node_pos = ReadOnlyField()
-    parent = PrimaryKeyRelatedField(many=False, read_only=True)
+    parentId = PrimaryKeyRelatedField(source="parent", queryset=Office.objects.all())
     root = PrimaryKeyRelatedField(many=False, read_only=True)
     height = ReadOnlyField()
 
     class Meta:
         model = Office
-        fields = ["id", "node_pos", "name", "parent", "root", "height", "instance"]
+        fields = ["id", "node_pos", "name", "parentId", "root", "height", "instance"]
 

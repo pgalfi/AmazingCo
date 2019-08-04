@@ -18,6 +18,14 @@ class OfficeViewSet(ModelViewSet):
 
         super().create(request, *args, **kwargs)
 
+    def update(self, request, *args, **kwargs):
+        office = self.get_object()
+        if "parentId" in request.data and office.parent_id != request.data["parentId"]:
+            new_parent = get_object_or_404(Office, pk=request.data["parentId"])
+            office.move_to_parent(new_parent)
+            return Response(OfficeSerializer(office, context={"request": request}).data)
+        super().update(request, *args, **kwargs)
+
     @action(detail=True, methods=["post"])
     def add_child(self, request, pk, **kwargs):
         office = get_object_or_404(Office, pk=pk)
