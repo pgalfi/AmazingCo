@@ -8,7 +8,7 @@ class TestOfficeData(TestCase):
     fixtures = ["offices.json"]
 
     def setUp(self) -> None:
-        self.root = Office.objects.get(node_id=0)
+        self.root = Office.objects.get(node_pos=0)
         for entry in load_sequence:
             parent_name = entry["parent"]
             parent_object = self.root
@@ -19,8 +19,8 @@ class TestOfficeData(TestCase):
     def test_data_load_00(self):
         self.assertEqual(0, Office.objects.get(pk=1).height)
         self.assertEqual(2, Office.objects.get(name="BA").height)
-        self.assertEqual(Office.objects.get(name="AA").parent, Office.objects.get(name="A").node_id)
-        self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B").node_id)
+        self.assertEqual(Office.objects.get(name="AA").parent, Office.objects.get(name="A"))
+        self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B"))
 
     def test_get_children_00(self):
         base_obj = Office.objects.get(name="BB")
@@ -37,16 +37,16 @@ class TestOfficeData(TestCase):
         self.assertEqual(4, base_obj.height)
         base_obj.move_to_parent(self.root)
         base_obj.refresh_from_db()
-        self.assertEqual(1, base_obj.node_id)
-        self.assertEqual(2, Office.objects.get(name="B").node_id)
-        self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B").node_id)
+        self.assertEqual(1, base_obj.node_pos)
+        self.assertEqual(2, Office.objects.get(name="B").node_pos)
+        self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B"))
 
     def test_move_01(self):
         base_obj = Office.objects.get(name="BB")
         self.assertEqual(2, base_obj.height)
         base_obj.move_to_parent(Office.objects.get(name="A"))
         base_obj.refresh_from_db()
-        self.assertEqual(7, base_obj.node_id)
-        self.assertEqual(1, Office.objects.get(name="B").node_id)
-        self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B").node_id)
-        self.assertEqual(Office.objects.get(name="BBA").parent, Office.objects.get(name="BB").node_id)
+        self.assertEqual(7, base_obj.node_pos)
+        self.assertEqual(1, Office.objects.get(name="B").node_pos)
+        self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B"))
+        self.assertEqual(Office.objects.get(name="BBA").parent, Office.objects.get(name="BB"))
