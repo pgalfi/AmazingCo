@@ -2,16 +2,7 @@ from rest_framework.fields import ReadOnlyField
 from rest_framework.relations import HyperlinkedIdentityField, PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
-from branches.models import Branch, Office
-
-
-class BranchSerializer(ModelSerializer):
-
-    branch_detail = HyperlinkedIdentityField(view_name='branch-detail')
-
-    class Meta:
-        model = Branch
-        fields = ["id", "name", "up_path", "full_path", "parent", "root", "height", "branch_detail"]
+from branches.models import Office
 
 
 class OfficeSerializer(ModelSerializer):
