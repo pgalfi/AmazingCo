@@ -1,15 +1,15 @@
-# Create your models here.
 from django.db import models
 from django.db.models import F
 
 
 class Office(models.Model):
-    node_pos = models.BigIntegerField(default=0)
+    node_pos = models.BigIntegerField(default=0)  # storage position of node in a queue-like storage of the office tree
     height = models.BigIntegerField(default=0)
-    parent = models.ForeignKey('Office', default=None, null=True, on_delete=models.CASCADE, related_name="first_children")
+    parent = models.ForeignKey('Office', default=None, null=True, on_delete=models.CASCADE,
+                               related_name="first_children")
     root = models.ForeignKey('Office', default=None, null=True, on_delete=models.CASCADE, related_name="all_nodes")
 
-    name = models.CharField(max_length=100, default=None, null=True)  # optional field, only used for testing
+    name = models.CharField(max_length=100, default=None, null=True)  # optional field, only used for testing, display
 
     class Meta:
         indexes = [
