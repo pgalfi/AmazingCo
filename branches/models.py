@@ -1,6 +1,6 @@
 # Create your models here.
 from django.db import models
-from django.db.models import F
+from django.db.models import F, Case, When
 
 
 class Branch(models.Model):
@@ -57,7 +57,11 @@ class Office(models.Model):
 
     def add_child(self, new_name):
         # self may need to be refreshed before adding children to get most up to date node_id in the model
-        Office.objects.filter(node_id__gt=self.node_id).update(node_id=F('node_id') + 1)
+        Office.objects.filter(node_id__gt=self.node_id).update(node_id=F('node_id') + 1,
+                                                               parent=Case(
+                                                                   When(parent__gt=self.node_id, then=F('parent') + 1),
+                                                                   default=F('parent')
+                                                               ))
         child_office = Office(name=new_name, node_id=self.node_id + 1, height=self.height + 1, parent=self.node_id,
                               root=0)
         child_office.save()
@@ -66,11 +70,21 @@ class Office(models.Model):
     def move_to_parent(self, new_parent_office):
         children = self.get_children()
         children_count = children.count()
-        # make space in the node_id mapping for the insertion
-        Office.objects.filter(node_id__gt=new_parent_office.node_id).update(node_id=F('node_id') + children_count + 1)
+        # make space in the node_id mapping for the move
+        Office.objects.filter(node_id__gt=new_parent_office.node_id).update(node_id=F('node_id') + children_count + 1,
+                                                                            parent=Case(
+                                                                                When(parent__gt=new_parent_office.node_id,
+                                                                                     then=F('parent') + children_count + 1),
+                                                                                default=F('parent')
+                                                                            ))
         self.parent = new_parent_office.node_id
+        # update children's node_id as per new mapping, and update their height and parent pointers
         children.update(node_id=F('node_id') - self.node_id + new_parent_office.node_id + 1,
-                        height=F('height') - self.height + new_parent_office.height + 1)
+                        height=F('height') - self.height + new_parent_office.height + 1,
+                        parent=Case(
+                            When(parent=self.node_id, then=new_parent_office.node_id + 1),
+                            default=F('parent')
+                        ))
         self.node_id = new_parent_office.node_id + 1
         self.height = new_parent_office.height + 1
         self.save()

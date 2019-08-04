@@ -18,7 +18,9 @@ class TestOfficeData(TestCase):
 
     def test_data_load_00(self):
         self.assertEqual(0, Office.objects.get(pk=1).height)
-        self.assertEqual(3, Office.objects.get(name="BBA").height)
+        self.assertEqual(2, Office.objects.get(name="BA").height)
+        self.assertEqual(Office.objects.get(name="AA").parent, Office.objects.get(name="A").node_id)
+        self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B").node_id)
 
     def test_get_children_00(self):
         base_obj = Office.objects.get(name="BB")
@@ -37,3 +39,14 @@ class TestOfficeData(TestCase):
         base_obj.refresh_from_db()
         self.assertEqual(1, base_obj.node_id)
         self.assertEqual(2, Office.objects.get(name="B").node_id)
+        self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B").node_id)
+
+    def test_move_01(self):
+        base_obj = Office.objects.get(name="BB")
+        self.assertEqual(2, base_obj.height)
+        base_obj.move_to_parent(Office.objects.get(name="A"))
+        base_obj.refresh_from_db()
+        self.assertEqual(7, base_obj.node_id)
+        self.assertEqual(1, Office.objects.get(name="B").node_id)
+        self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B").node_id)
+        self.assertEqual(Office.objects.get(name="BBA").parent, Office.objects.get(name="BB").node_id)
