@@ -1,0 +1,10 @@
+[
+  {
+    "model": "branches.office",
+    "pk": 1,
+    "fields": {
+      "node_id": 0,
+      "name": "root"
+    }
+  }
+]
