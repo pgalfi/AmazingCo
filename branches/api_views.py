@@ -35,8 +35,12 @@ class OfficeViewSet(ModelViewSet):
         office = self.get_object()
         if "parentId" in request.data and office.parent_id != request.data["parentId"]:
             new_parent = get_object_or_404(Office, pk=request.data["parentId"])
-            office.move_to_parent(new_parent)
-            return Response(OfficeSerializer(office, context={"request": request}).data)
+            if not office.has_child(new_parent):
+                office.move_to_parent(new_parent)
+                return Response(OfficeSerializer(office, context={"request": request}).data)
+            else:
+                return Response({"parentId": "new parent is a child of current node, invalid move"},
+                                status=status.HTTP_400_BAD_REQUEST)
         super().update(request, *args, **kwargs)
 
     @action(detail=True, methods=["get"])

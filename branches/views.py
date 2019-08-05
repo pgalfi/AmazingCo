@@ -2,6 +2,6 @@ from django.views.generic import TemplateView
 
 
 class IndexView(TemplateView):
-    template_name = "layout_static.html"
+    template_name = "layout.html"
 
 

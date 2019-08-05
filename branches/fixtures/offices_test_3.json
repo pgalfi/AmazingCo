@@ -1,0 +1,79 @@
+[
+  {
+    "model": "branches.office",
+    "pk": 22,
+    "fields": {
+      "node_pos": 0,
+      "height": 0,
+      "parent": null,
+      "root": null,
+      "name": "root"
+    }
+  },
+  {
+    "model": "branches.office",
+    "pk": 23,
+    "fields": {
+      "node_pos": 4,
+      "height": 1,
+      "parent": 22,
+      "root": 22,
+      "name": "A"
+    }
+  },
+  {
+    "model": "branches.office",
+    "pk": 24,
+    "fields": {
+      "node_pos": 5,
+      "height": 2,
+      "parent": 23,
+      "root": 22,
+      "name": "AA"
+    }
+  },
+  {
+    "model": "branches.office",
+    "pk": 25,
+    "fields": {
+      "node_pos": 10,
+      "height": 3,
+      "parent": 23,
+      "root": 22,
+      "name": "AB"
+    }
+  },
+  {
+    "model": "branches.office",
+    "pk": 26,
+    "fields": {
+      "node_pos": 1,
+      "height": 1,
+      "parent": 22,
+      "root": 22,
+      "name": "B"
+    }
+  },
+  {
+    "model": "branches.office",
+    "pk": 27,
+    "fields": {
+      "node_pos": 2,
+      "height": 2,
+      "parent": 26,
+      "root": 22,
+      "name": "BA"
+    }
+  },
+  {
+    "model": "branches.office",
+    "pk": 28,
+    "fields": {
+      "node_pos": 3,
+      "height": 3,
+      "parent": 27,
+      "root": 22,
+      "name": "BAA"
+    }
+  }
+]

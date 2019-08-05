@@ -1,6 +1,7 @@
 from django.test import TestCase
 
-from branches.fixtures.offices_data import load_sequence
+from branches.fixtures.offices_data_01 import load_sequence
+from branches.fixtures.sequence_load import load
 from branches.models import Office
 
 
@@ -9,12 +10,7 @@ class TestOfficeData(TestCase):
 
     def setUp(self) -> None:
         self.root = Office.objects.get(node_pos=0)
-        for entry in load_sequence:
-            parent_name = entry["parent"]
-            parent_object = self.root
-            if parent_name != "":
-                parent_object = Office.objects.get(name=parent_name)
-            parent_object.add_child(entry["name"])
+        load(self.root, load_sequence)
 
     def test_data_load_00(self):
         self.assertEqual(0, Office.objects.get(pk=1).height)
@@ -23,14 +19,26 @@ class TestOfficeData(TestCase):
         self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B"))
 
     def test_get_children_00(self):
+        all_offices = list(Office.objects.all().order_by("node_pos"))
         base_obj = Office.objects.get(name="BB")
         children = base_obj.get_children()
         self.assertEqual(2, children.count())
 
     def test_get_children_01(self):
+        all_offices = list(Office.objects.all().order_by("node_pos"))
         base_obj = Office.objects.get(name="AC")
         children = base_obj.get_children()
         self.assertEqual(0, children.count())
+
+    def test_has_child_00(self):
+        office_b = Office.objects.get(name="B")
+        office_bbaa = Office.objects.get(name="BBAA")
+        self.assertTrue(office_b.has_child(office_bbaa))
+
+    def test_has_child_01(self):
+        office_ab = Office.objects.get(name="AB")
+        office_bb = Office.objects.get(name="BB")
+        self.assertFalse(office_bb.has_child(office_ab))
 
     def test_move_00(self):
         base_obj = Office.objects.get(name="BBAA")
