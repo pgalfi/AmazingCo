@@ -19,6 +19,18 @@ A REST API is built around this model using Django REST Framework. Serializers a
 
 Django REST Framework automatically generates an HTML browsable version of the API for discovery purposes. This can be accessed at "/branches/v1/".
 
+### User Interface
+
 A basic front-end UI is created using components from Kendo UI framework that only consume the defined API viewpoints and display the results in a tree list and a list view.
 
+The tree list provides a hierarchical view of all the nodes. Buttons are provided for adding nodes and deleting nodes. The "name" field ca be edited within the cell. Drag and drop option is available on the first column cell of each node, which in turn will trigger the change of parent in the backend.
+
+Any changes made need to be saved using the Save Changes button, they aren't immediately committed.
+
 The front end UI can be accessed through "/branches".
+
+The project can be pulled as a docker image from here:
+
+**docker pull pgalfi/assignments:AmazingCo**
+
+Please run it with -p 80:80 to expose the http port that the app will listen to.
