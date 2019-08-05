@@ -26,7 +26,7 @@ $("#office-tree").kendoTreeList({
             },
             create: {
                 url: function (item) {
-                    return get_service_url() + "offices/" + item.parentId + "/add_child/"
+                    return get_service_url() + "offices/"
                 },
                 contentType: "application/json",
                 dataType: "json",
@@ -47,9 +47,19 @@ $("#office-tree").kendoTreeList({
                 },
                 expanded: true
             }
+        },
+        change: function (e) {
+            if (e.action==="itemchange" && e.field==="parentId") e.sender.parent_changed = true;
+            if (e.action==="sync" && e.sender.parent_changed) {
+                e.sender.read();
+                e.sender.parent_changed = false;
+            }
+        },
+        error: function (e) {
+            this.cancelChanges();
         }
     },
-    toolbar: ["save", "cancel", {name: "refresh", text: "Refresh"} ],
+    toolbar: ["create", "save", "cancel"],
     height: 580,
     editable: {
         mode: "incell",
