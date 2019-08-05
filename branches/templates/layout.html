@@ -9,27 +9,36 @@
     <link href="{% static 'branches/css/kendo.rtl.min.css' %}" rel="stylesheet">
     <link href="{% static 'branches/css/kendo.bootstrap-v4.min.css' %}" rel="stylesheet">
     <link href="{% static 'branches/css/kendo.bootstrap.mobile.min.css'%}" rel="stylesheet">
-    <title>Amazing Co Offices</title>
+    <title>Amazing Co Branches</title>
 </head>
 <body>
     <header>
         <nav class="navbar fixed-top navbar-dark bg-dark">
             <a class="navbar-brand mr-auto" href="#">
-                Amazing Co Offices
+                Amazing Co Branches
             </a>
         </nav>
     </header>
     <div class="container-fluid p-5 mt-5">
+
         <div class="row">
-            <div class="col-auto">
+            <div class="col-auto align-items-center">
+                <h5 class="bg-dark text-white pt-2 pb-2 pl-2 mb-0">Our Office Hierarchy</h5>
                 <div id="office-tree"></div>
             </div>
         </div>
 
-    </div>
-    <script id="node-template" type="text/x-kendo-template">
+        <div class="row mt-3">
+            <div class="col-12 align-items-center">
+                <div class="input-group">
+                    <h5 class="bg-dark text-white pt-2 pb-2 pl-2 mb-0">List Descendant Offices:</h5>
+                    <input id="list-office-number" type="text" class="form-control" placeholder="Office #">
+                </div>
+                <div id="office-listing"></div>
+            </div>
+        </div>
 
-    </script>
+    </div>
     <script src="{% static 'branches/js/jquery.min.js' %}"></script>
     <script src="{% static 'branches/js/popper.min.js' %}"></script>
     <script src="{% static 'branches/js/bootstrap.min.js' %}"></script>

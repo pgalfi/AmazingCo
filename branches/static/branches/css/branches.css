@@ -9662,4 +9662,12 @@ body {
   background-color: rgba(181, 178, 181, 0.73);
 }
 
+div.k-grid-content > table > tbody > tr > td:first-child {
+  cursor: move;
+}
+
+div.listed-office {
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=branches.css.map */

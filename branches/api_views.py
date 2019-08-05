@@ -46,5 +46,6 @@ class OfficeViewSet(ModelViewSet):
     @action(detail=True, methods=["get"])
     def get_children(self, request, pk, **kwargs):
         office = get_object_or_404(Office, pk=pk)
+        print("Getting children: ", office.name)
         children = office.get_children()
         return Response(OfficeSerializer(children, many=True, context={"request": request}).data)

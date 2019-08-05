@@ -79,7 +79,7 @@ $("#office-tree").kendoTreeList({
         }
     },
     columns: [
-        { field: "id", title: "ID", template: "Office #: id #", editable: function () {return false;}},
+        { field: "id", title: "ID", template: "<span class='first-column'>Office #: id #</span>", editable: function () {return false;}},
         { field: "name", title: "Name" },
         { field: "height", title: "Height", editable: function () {return false;}},
         { command: [{name: "createchild", text: "Add child"},"destroy" ], width: 240 }
@@ -88,3 +88,41 @@ $("#office-tree").kendoTreeList({
     resizable: true
 });
 
+$("#office-listing").kendoListView({
+    dataSource: {
+        transport: {
+            read: {
+                url: function () {
+                    return get_service_url() + "offices/" + $("#list-office-number").val() + "/get_children/"
+                },
+                contentType: "application/json",
+                dataType: "json"
+            },
+            parameterMap: function (options) {
+                return JSON.stringify(options);
+            },
+        },
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: {field: "id", type: "number"},
+                    name: { field: "name",  type: "string"},
+                    height: { field: "height", type: "number"}
+                },
+            }
+        },
+
+    },
+    height: 240,
+    template: "<div class='listed-office'>Office #: id#, #: name# (#: height#)</div>",
+    selectable: true,
+    autoBind: false,
+});
+
+$("#list-office-number").keypress(function (e) {
+    let keycode = (e.keyCode ? e.keyCode : e.which);
+    if (keycode === 13) {
+        $("#office-listing").data("kendoListView").dataSource.read();
+    }
+});
