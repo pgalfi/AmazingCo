@@ -4,8 +4,8 @@ from django.db.models import F
 
 class Office(models.Model):
     # storage position of node in a queue-like storage of the office tree
-    node_pos = models.BigIntegerField(default=0, db_index=True)
-    # count of descendant nodes under this node (alocation in storage queue)
+    node_pos = models.BigIntegerField(default=0)
+    # descendant nodes count under this node (alocation in storage queue)
     desc_count = models.BigIntegerField(default=0)
 
     height = models.BigIntegerField(default=0)
@@ -14,6 +14,12 @@ class Office(models.Model):
     root = models.ForeignKey('Office', default=None, null=True, on_delete=models.CASCADE, related_name="all_nodes")
 
     name = models.CharField(max_length=100, default=None, null=True)  # optional field, only used for testing, display
+
+    class Meta:
+        indexes = (
+            models.Index(fields=["node_pos"]),
+            models.Index(fields=["node_pos", "desc_count"]),
+        )
 
     def __repr__(self):
         return self.name + "(" + str(self.node_pos) + "-" + str(self.height) + "-" + str(self.desc_count) + ")"
@@ -41,7 +47,21 @@ class Office(models.Model):
 
     def move_to_parent(self, new_parent_office):
         # make space in the node_pos mapping for the move
-        Office.objects.filter(node_pos__gt=new_parent_office.node_pos).update(node_pos=F('node_pos') + self.desc_count + 1)
+        Office.objects.filter(node_pos__gt=new_parent_office.node_pos).update(
+            node_pos=F('node_pos') + self.desc_count + 1
+        )
+        # update descendant count allocation for parents at destination
+        Office.objects.filter(node_pos__lte=new_parent_office.node_pos,
+                              desc_count__gte=new_parent_office.node_pos - F('node_pos')).update(
+            desc_count=F('desc_count') + self.desc_count + 1
+        )
+
+        # update descendant count allocation at original parent
+        Office.objects.filter(node_pos__lte=self.parent.node_pos,
+                              desc_count__gte=self.parent.node_pos - F('node_pos')).update(
+            desc_count=F('desc_count') - self.desc_count -1
+        )
+
         self.refresh_from_db()
         self.parent = new_parent_office
 

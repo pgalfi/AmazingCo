@@ -19,13 +19,11 @@ class TestOfficeData(TestCase):
         self.assertEqual(Office.objects.get(name="BA").parent, Office.objects.get(name="B"))
 
     def test_get_children_00(self):
-        all_offices = list(Office.objects.all().order_by("node_pos"))
         base_obj = Office.objects.get(name="BB")
         children = base_obj.get_children()
         self.assertEqual(2, children.count())
 
     def test_get_children_01(self):
-        all_offices = list(Office.objects.all().order_by("node_pos"))
         base_obj = Office.objects.get(name="AC")
         children = base_obj.get_children()
         self.assertEqual(0, children.count())
